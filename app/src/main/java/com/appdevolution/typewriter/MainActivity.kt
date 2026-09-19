@@ -254,7 +254,7 @@ class MainActivity : Activity() {
     }
 
     private fun updateStats(saved: Boolean) {
-        val t = editor.text.toString(); val w = if (t.isBlank()) 0 else Regex("\S+").findAll(t).count()
+        val t = editor.text.toString(); val w = if (t.isBlank()) 0 else Regex("\\S+").findAll(t).count()
         stats.text = w.toString() + " parole   ·   " + t.length + " caratteri   ·   " + fontName
         if (saved) { saveChip.text = "✓ Salvato"; saveChip.setTextColor(Color.rgb(63,87,67)); saveChip.background = shape(Color.rgb(217,231,216),14f) }
     }
@@ -263,13 +263,11 @@ class MainActivity : Activity() {
         if (t.length < beforeLength) { play(sBack,.78f); haptic(); move(-.8f); return }
         if (t.length <= beforeLength || t.isEmpty()) return
         when (t.last()) {
-            '
-' -> { play(sReturn,.92f); bellArmed = true; haptic(); move(1.6f) }
+            '\n' -> { play(sReturn,.92f); bellArmed = true; haptic(); move(1.6f) }
             ' ' -> { play(sSpace,.70f); move(-.4f) }
             else -> { if (keys.isNotEmpty()) play(keys[Random.nextInt(keys.size)],.82f); haptic(); move(-.7f) }
         }
-        val n = t.substringAfterLast('
-').length
+        val n = t.substringAfterLast('\n').length
         if (n >= 66 && bellArmed) { play(sBell,.72f); bellArmed = false }
         if (n < 55) bellArmed = true
     }
